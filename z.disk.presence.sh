@@ -1,8 +1,7 @@
 ### Varg
 #!/usr/bin/env bash
-
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 #Variables
-SMARTCTL="/usr/sbin/smartctl"
 DFILE="/tmp/z.disk.pres.discovery.txt"
 IFILE="/tmp/z.disk.pres.items.txt"
 
