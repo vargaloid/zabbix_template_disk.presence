@@ -54,7 +54,7 @@ OMMA=$(echo "${OMMALINE} - 1" | bc)
 NEWDFILE=$(sed "${OMMA}s/,//" ${DFILE})
 echo "${NEWDFILE}" > ${DFILE}
 
-cat ${DFILE}
-cat ${IFILE}
+#cat ${DFILE}
+#cat ${IFILE}
 #echo ${OMMA}
 exit 0
