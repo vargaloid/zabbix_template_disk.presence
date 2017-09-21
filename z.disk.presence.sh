@@ -9,8 +9,8 @@ IFILE="/tmp/z.disk.pres.items.txt"
 touch ${IFILE}
 touch ${DFILE}
 cp /dev/null ${IFILE}
-chmod 774 ${IFILE}
-chmod 774 ${DFILE}
+chmod 664 ${IFILE}
+chmod 664 ${DFILE}
 
 #Make file with items
 ##Non-RAID values
@@ -57,3 +57,4 @@ echo "${NEWDFILE}" > ${DFILE}
 cat ${DFILE}
 cat ${IFILE}
 #echo ${OMMA}
+exit 0
