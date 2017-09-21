@@ -18,22 +18,22 @@ DISKS=$(lsblk -S | grep "disk" | grep "ATA" | awk '{print $1}')
 
     for label in $DISKS
     do
-    echo -n "$label " >> ${IFILE} && $SMARTCTL -i /dev/$label | grep "Device Model" >> ${IFILE}
-    echo -n "$label " >> ${IFILE} && $SMARTCTL -i /dev/$label | grep "Serial Number" >> ${IFILE}
+    echo -n "$label " >> ${IFILE} && smartctl -i /dev/$label | grep "Device Model" >> ${IFILE}
+    echo -n "$label " >> ${IFILE} && smartctl -i /dev/$label | grep "Serial Number" >> ${IFILE}
     done
 
 ##RAID values
 DISKS_RAID=$(lsblk -S | grep "disk" | grep -v "ATA" | awk '{print $1}')
 
-    if [[ -n "$DISKS_RAID" ]]
+    if [ -n "$DISKS_RAID" ]
     then
     DISKS_RAID_ID=$(megacli -pdlist -a0| grep 'Device Id' | awk -F ': ' '{print $2}')
     for raid_label in $DISKS_RAID
     do
         for megaraid_id in $DISKS_RAID_ID
         do
-        echo -n "${raid_label}.megaraid.$megaraid_id " >> ${IFILE} && $SMARTCTL -i -d sat+megaraid,$megaraid_id /dev/$raid_label | grep "Device Model" >> ${IFILE}
-        echo -n "${raid_label}.megaraid.$megaraid_id " >> ${IFILE} && $SMARTCTL -i -d sat+megaraid,$megaraid_id /dev/$raid_label | grep "Serial Number" >> ${IFILE}
+        echo -n "${raid_label}.megaraid.$megaraid_id " >> ${IFILE} && smartctl -i -d sat+megaraid,$megaraid_id /dev/$raid_label | grep "Device Model" >> ${IFILE}
+        echo -n "${raid_label}.megaraid.$megaraid_id " >> ${IFILE} && smartctl -i -d sat+megaraid,$megaraid_id /dev/$raid_label | grep "Serial Number" >> ${IFILE}
         done
     done
     fi
