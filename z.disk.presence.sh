@@ -1,6 +1,5 @@
 ### Varg
 #!/usr/bin/env bash
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
 #Variables
 DFILE="/tmp/z.disk.pres.discovery.txt"
 IFILE="/tmp/z.disk.pres.items.txt"
@@ -13,7 +12,6 @@ chmod 664 ${DFILE}
 
 #Make file with items
 ##Non-RAID values
-#lsblk -o NAME | grep -E ^sd[a-z]
 DISKS=$(lsblk -S | grep "disk" | grep "ATA" | awk '{print $1}')
 
     for label in $DISKS
@@ -53,7 +51,4 @@ OMMA=$(echo "${OMMALINE} - 1" | bc)
 NEWDFILE=$(sed "${OMMA}s/,//" ${DFILE})
 echo "${NEWDFILE}" > ${DFILE}
 
-#cat ${DFILE}
-#cat ${IFILE}
-#echo ${OMMA}
 exit 0
