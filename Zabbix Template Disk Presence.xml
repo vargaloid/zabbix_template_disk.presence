@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.2</version>
-    <date>2017-09-22T11:10:46Z</date>
+    <date>2017-09-22T11:45:54Z</date>
     <groups>
         <group>
             <name>Self Made</name>
@@ -102,7 +102,7 @@
                     <description/>
                     <item_prototypes>
                         <item_prototype>
-                            <name>Disk Serial Number</name>
+                            <name>Disk {#DISK} Serial Number</name>
                             <type>0</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
