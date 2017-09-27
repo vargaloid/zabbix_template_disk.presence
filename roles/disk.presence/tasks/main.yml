@@ -1,0 +1,54 @@
+---
+################### 
+
+- shell: dpkg-query -l 'zabbix-agent'
+  ignore_errors: yes
+
+- apt_key:
+    url: https://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key
+    state: present
+
+- apt_repository:
+    repo: deb http://hwraid.le-vert.net/debian {{ ansible_distribution_release }} main
+    state: present
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Install required packages
+  apt: name={{ item }}
+  with_items:
+    - bc
+    - megacli
+    - smartmontools
+
+# create a directory if it doesn't exist 
+- file:
+    path: /etc/zabbix/bin
+    state: directory
+    owner: zabbix
+    group: zabbix
+    mode: 0755
+
+- name: Installing z.disk.presence.sh
+  copy: 
+    src="/root/scripts/ansible/roles/disk.presence/templates/z.disk.presence.sh" 
+    dest="/etc/zabbix/bin/z.disk.presence.sh" 
+    owner="zabbix" 
+    group="zabbix"   
+    mode=755
+
+- name: Updating sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: 'zabbix ALL=NOPASSWD: /etc/zabbix/bin/z.disk.presence.sh'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Updating zabbix_agentd.conf
+  lineinfile:
+    dest: /etc/zabbix/zabbix_agentd.conf
+    line: "UserParameter=disk.sn[*],cat /tmp/z.disk.pres.items.txt | grep $1 | grep $2 | awk '{print $ 4}'"
+
+- name: Checking zabbix
+  service: name=zabbix-agent enabled=yes state=restarted
